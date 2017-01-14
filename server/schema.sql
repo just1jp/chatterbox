@@ -23,6 +23,6 @@ CREATE TABLE messages (
   user INT,
   message VARCHAR(140),
   room VARCHAR(20),
-  createdAt DATE,
+  createdAt DATETIME,
   FOREIGN KEY (user) REFERENCES users (id)
 );

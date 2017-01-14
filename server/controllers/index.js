@@ -17,6 +17,7 @@ module.exports = {
     },
     post: function (req, res) {
       models.users.post(req.body.username);
+      res.end();
     }
   }
 };
