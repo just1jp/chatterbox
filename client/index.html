@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ye Olde Box o' Chatter</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Arima+Madurai:300,400,900" rel="stylesheet">
+
+    <!-- dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script>
+      // YOU DO NOT NEED TO EDIT THIS CODE
+      if (!/(&|\?)username=/.test(window.location.search)) {
+        var newSearch = window.location.search;
+        if (newSearch !== '' & newSearch !== '?') {
+          newSearch += '&';
+        }
+        newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
+        window.location.search = newSearch;
+      }
+    </script>
+    <!-- your scripts -->
+    <script src="app.js"></script>
+  </head>
+  <body>
+    <div id="main">
+      <h1>Ye Olde Box o' Chatter</h1>
+      <label>Chat Room</label>
+      <select id="roomSelect">
+        <option value="All">All</option>
+      </select>
+      <button id="create-room">Create Room</button>
+      <form id="room-create-box">
+        <input id="create-room-text" type="text" placeholder="Name Your Room...">
+        <input id="room-submit" type="submit" value="Create" onclick="return false">
+      </form>
+    </div>
+    <div id="chats">
+      <form id="user-message">
+        <input id="submit-text" type="text" name="message">
+        <input id="submit-message" type="submit" value="Send" onclick="return false">
+      </form>
+      <ul class="messages">
+      </ul>
+    </div>
+  </body>
+</html>

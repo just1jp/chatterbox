@@ -1,0 +1,163 @@
+body {
+  background: radial-gradient(#12ebff, #0765cc 75%, #023a6c);
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+  padding: 0 25px;
+  font-family:'Arima Madurai', sans-serif;
+  min-height: 800px;
+}
+
+ul {
+  list-style: none;
+}
+
+#main, #chats {
+  width: 500px;
+  margin: auto;
+  text-align: left;
+  background-color: rgba(255,255,255, 0.7);
+  padding: 10px 60px;
+}
+
+#main {
+  margin-top: 40px;
+  border-bottom: solid #fff;
+  border-width: 0 1px 1px 1px;
+  border-radius: 5px 5px 0 0;
+}
+
+#chats {
+  border-radius: 0 0 5px 5px;
+}
+
+#main h1 {
+  margin: 0;
+  font-size: 35px;
+  padding-top: 5px;
+}
+
+#main h1 span {
+  font-style:italic;
+}
+
+#chats ul {
+  max-height: 550px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+#main .error {
+  border: 1px solid red;
+  background: #FDEFF0;
+  padding: 20px;
+}
+
+#main .success {
+  margin-top: 25px;
+}
+
+#main .success code {
+  font-size: 12px;
+  color: green;
+  line-height: 13px;
+}
+
+#room-submit {
+  display: none;
+}
+
+#create-room-text {
+  display:none;
+  width: 200px;
+  height: 10px;
+}
+
+form#user-message {
+  padding: 20px;
+  padding-left: 0;
+}
+
+form input[type=text] {
+  margin-right: 10px;
+  width: 70%;
+  font-size: 12px;
+  padding: 5px;
+}
+
+.chat {
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.chat .username {
+  font-weight: 800;
+}
+
+.chat:hover {
+  background-color: #ddd;
+}
+
+.spinner {
+  float: right;
+  height: 46px;
+  margin-bottom: 5px;
+}
+
+.spinner img {
+  padding: 10px;
+}
+
+.friend {
+  font-weight: bold;
+}
+
+#roomSelect {
+  width: 100%;
+  max-width: 90%;
+}
+
+.messages {
+  margin-top: 5px;
+  padding: 0;
+}
+
+.messages span:hover {
+  cursor: pointer;
+}
+
+.messages li {
+  background-color: #CACACA;
+  margin-bottom: 2px;
+  border-radius: 5px;
+  overflow-wrap: break-word;
+}
+
+.messages li:hover {
+  background-color: #8b8b8b;
+}
+
+.messages span {
+  display: block;
+}
+
+li span:nth-child(1) {
+  font-variant: small-caps;
+  font-size: 14px;
+  padding: 1px 0 0 5px;
+}
+
+li span:nth-child(2) {
+  font-size: 16px;
+  padding: 0 0 0 5px;
+}
+
+li span:nth-child(3) {
+  font-style: italic;
+  font-size: 12px;
+  padding: 0 0 0 5px;
+}
+
+li.friend-box {
+  background-color: #fcde8d;
+}
