@@ -6,23 +6,22 @@ USE chat;
  *  to create the database and the tables.*/
 
 CREATE TABLE users (
-  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(50)
+  name VARCHAR(50) NOT NULL PRIMARY KEY
 );
 
 CREATE TABLE friends (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  base INT,
-  friend INT,
-  FOREIGN KEY (base) REFERENCES users (id),
-  FOREIGN KEY (friend) REFERENCES users (id)
+  base VARCHAR(50),
+  friend VARCHAR(50),
+  FOREIGN KEY (base) REFERENCES users (name),
+  FOREIGN KEY (friend) REFERENCES users (name)
 );
 
 CREATE TABLE messages (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  user INT,
+  user VARCHAR(50),
   message VARCHAR(140),
   room VARCHAR(20),
   createdAt DATETIME,
-  FOREIGN KEY (user) REFERENCES users (id)
+  FOREIGN KEY (user) REFERENCES users (name)
 );

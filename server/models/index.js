@@ -1,30 +1,16 @@
 var db = require('../db');
 var request = require('request');
 
-request({
-  method: 'POST',
-  uri: 'http://127.0.0.1:3000/classes/users',
-  json: {
-    username: 'Valjean'
-  }
-});
-
-request({
-  method: 'POST',
-  uri: 'http://127.0.0.1:3000/classes/messages',
-  json: {
-    username: 'Valjean',
-    message: 'In mercy\'s name, three days is all I need.',
-    roomname: 'Hello'
-  }
-});
-
 db.connection.connect();
 
 var query = function(command, callback) {
   db.connection.query(command, function(err, results) {
     if (err) {
-      throw err; 
+      if (err.code === 'ER_DUP_ENTRY') {
+        console.log(err.code);
+      } else {
+        throw err;
+      }
     } else {
       callback(results);
     }
@@ -48,14 +34,17 @@ var getTime = () => {
 
 module.exports = {
   messages: {
-    get: function () {}, // a function which produces all the messages
+    // a function which produces all the messages
+    get: function (res) {
+      query('select * from messages', function(results) {
+        console.log(results);
+        res.end(JSON.stringify(results));
+      });
+    },
     post: function (message) {
-      console.log(message);
       var keys = '(user, message, room, createdAt)';
-      var getUserID = `(select id from users where name = "${message.username}")`;
-      var values = `(${getUserID}, "${message.message}", "${message.roomname}", "2017-01-14 04:22:12")`;
+      var values = `("${message.username}", "${message.message}", "${message.roomname}", "2017-01-14 04:22:12")`;
       var command = `INSERT INTO messages ${keys} values ${values}`;
-      console.log('command', command);
 
       query(command, function(results) {
         console.log(results);
@@ -64,9 +53,10 @@ module.exports = {
   },
 
   users: {
-    get: function () {
+    get: function (res) {
       query('select * from users', function(results) {
         console.log(results);
+        res.end(JSON.stringify(results));
       });
     },
     post: function (user) {
@@ -77,3 +67,18 @@ module.exports = {
     }
   }
 };  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
