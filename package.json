@@ -18,7 +18,9 @@
     "db": "mysql -u root -p"
   },
   "dependencies": {
+    "bluebird": "^3.4.7",
     "body-parser": "^1.9.2",
+    "date-and-time": "^0.4.0",
     "express": "^4.10.1",
     "morgan": "^1.4.1",
     "mysql": "^2.4.2",

@@ -23,7 +23,7 @@ $(document).ready(function() {
       username = username.substring(username.indexOf('=') + 1, username.length);
       var roomname = $('#roomSelect').find(':selected').text();
       var message = {
-        username: username,
+        user: username,
         message: text,
         roomname: roomname
       };
@@ -86,11 +86,12 @@ $(document).ready(function() {
       success: function (response) {
         var data = JSON.parse(response);
         this.clearMessages();
-        for (var i = data.results.length - 1; i >= 0; i--) {
-          if (room === 'All' || this.escapeHtml(data.results[i].roomname) === room) {
-            this.renderMessage(data.results[i]);
+        console.log(data);
+        for (var i = data.length - 1; i >= 0; i--) {
+          if (room === 'All' || this.escapeHtml(data[i].room) === room) {
+            this.renderMessage(data[i]);
           }
-          this.renderRoom(data.results[i]);
+          this.renderRoom(data[i]);
         }
       }.bind(this),
       error: function (data) {
@@ -113,7 +114,7 @@ $(document).ready(function() {
     var mins = ('0' + created.getMinutes()).slice(-2);
     var seconds = ('0' + created.getSeconds()).slice(-2);
 
-    var username = this.escapeHtml(message.username);
+    var username = this.escapeHtml(message.user);
     var timeStamp = month + '/' + day + '/' + year + ' ' + hours + ':' + mins + ':' + seconds;
     var user = $('<span></span>').append(username + ' foretold: ');
     var text = $('<span></span>').append(this.escapeHtml(message.message));
@@ -130,7 +131,7 @@ $(document).ready(function() {
   };
 
   ChatterBox.prototype.renderRoom = function (message) {
-    var currentRoom = this.escapeHtml(message.roomname);
+    var currentRoom = this.escapeHtml(message.room);
     var rooms = $('#roomSelect').children('option');
 
     for (var i = 0; i < rooms.length; i++) {

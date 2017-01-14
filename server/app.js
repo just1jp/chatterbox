@@ -11,15 +11,29 @@ var router = require('./routes.js');
 var app = express();
 module.exports.app = app;
 
+var header = {
+  'access-control-allow-origin': '*',
+  'access-control-allow-methods': 'GET, POST, OPTIONS',
+  'access-control-allow-headers': 'content-type, accept',
+  'access-control-max-age': 10
+};
+
+
 // Set what we are listening on.
 app.set('port', 3000);
+
+app.use(function(req, res, next) {
+  res.header(header);
+  next();
+});
 
 // Logging and parsing
 app.use(morgan('dev'));
 app.use(parser.json());
 
 // Set up our routes
-app.use('/classes', router);
+app.use('/', router);
+// app.use('/classes', router);
 
 // Serve the client files
 app.use(express.static(__dirname + '/../client'));

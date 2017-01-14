@@ -1,5 +1,7 @@
 var db = require('../db');
 var request = require('request');
+var date = require('date-and-time');
+var Promise = require('bluebird');
 
 db.connection.connect();
 
@@ -8,6 +10,7 @@ var query = function(command, callback) {
     if (err) {
       if (err.code === 'ER_DUP_ENTRY') {
         console.log(err.code);
+        callback(results);
       } else {
         throw err;
       }
@@ -17,16 +20,8 @@ var query = function(command, callback) {
   });
 };
 
-var getTime = () => {
-  var date = new Date();
-  var year = date.getFullYear();
-  var month = date.getMonth();
-  var day = date.getTime();
-  var hours = date.getHours();
-  var mins = date.getMinutes();
-  var secs = date.getSeconds();
-
-  console.log(year + '-' + month + '-' + day + ' ' + hours + ':' + mins + ':' + secs);
+var dateTime = function() {
+  return date.format(new Date(), 'YYYY/MM/DD HH:mm:ss');
 };
 
 // INSERT INTO messages (user, message, room, createdAt) values ((select id from users where name = "derek"), 
@@ -37,32 +32,36 @@ module.exports = {
     // a function which produces all the messages
     get: function (res) {
       query('select * from messages', function(results) {
-        console.log(results);
+        console.log('message get ', results);
         res.end(JSON.stringify(results));
       });
     },
-    post: function (message) {
+    post: function (message, res) {
       var keys = '(user, message, room, createdAt)';
-      var values = `("${message.username}", "${message.message}", "${message.roomname}", "2017-01-14 04:22:12")`;
+      var values = `("${message.user}", "${message.message}", "${message.roomname}", "${dateTime()}")`;
       var command = `INSERT INTO messages ${keys} values ${values}`;
 
-      query(command, function(results) {
-        console.log(results);
-      });
-    } // a function which can be used to insert a message into the database
+      var userPost = Promise.promisify(module.exports.users.post);
+      userPost(message.user).then(
+        query(command, function(results) {
+          console.log('message post ', results);
+          res.end();
+        })
+      );
+    }
   },
 
   users: {
     get: function (res) {
       query('select * from users', function(results) {
-        console.log(results);
+        console.log('user get ', results);
         res.end(JSON.stringify(results));
       });
     },
     post: function (user) {
       var call = 'INSERT INTO users (name) values ("' + user + '")';
       query(call, function(results) {
-        console.log(results);
+        console.log('user results ', results);
       });
     }
   }

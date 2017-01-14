@@ -6,8 +6,7 @@ module.exports = {
       models.messages.get(res);
     },
     post: function (req, res) {
-      models.messages.post(req.body);
-      res.end();
+      models.messages.post(req.body, res);
     }
   },
 
@@ -16,8 +15,8 @@ module.exports = {
       models.users.get(res);
     },
     post: function (req, res) {
-      models.users.post(req.body.username);
-      res.end();
+      console.log(req.body, ' post user name req');
+      models.users.post(req.body.username, res);
     }
   }
 };
