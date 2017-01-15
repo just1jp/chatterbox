@@ -1,10 +1,6 @@
 CREATE DATABASE chat;
 USE chat;
 
-/*  Execute this file from the command line by typing:
- *    mysql -u root < server/schema.sql
- *  to create the database and the tables.*/
-
 CREATE TABLE users (
   name VARCHAR(50) NOT NULL PRIMARY KEY
 );
@@ -25,3 +21,7 @@ CREATE TABLE messages (
   createdAt DATETIME,
   FOREIGN KEY (user) REFERENCES users (name)
 );
+
+/*  Execute this file from the command line by typing:
+ *    mysql -u root < server/schema.sql
+ *  to create the database and the tables.*/

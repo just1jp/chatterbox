@@ -5,7 +5,7 @@ body {
   text-align: center;
   padding: 0 25px;
   font-family:'Arima Madurai', sans-serif;
-  min-height: 800px;
+  height: 100vh;
 }
 
 ul {

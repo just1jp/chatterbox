@@ -3,23 +3,6 @@ var request = require('request');
 var date = require('date-and-time');
 var Promise = require('bluebird');
 
-db.connection.connect();
-
-var query = function(command, callback) {
-  db.connection.query(command, function(err, results) {
-    if (err) {
-      if (err.code === 'ER_DUP_ENTRY') {
-        console.log(err.code);
-        callback(results);
-      } else {
-        throw err;
-      }
-    } else {
-      callback(results);
-    }
-  });
-};
-
 var dateTime = function() {
   return date.format(new Date(), 'YYYY/MM/DD HH:mm:ss');
 };
@@ -31,37 +14,58 @@ module.exports = {
   messages: {
     // a function which produces all the messages
     get: function (res) {
-      query('select * from messages', function(results) {
-        console.log('message get ', results);
-        res.end(JSON.stringify(results));
-      });
+      db.messages.findAll()
+        .then(function(results) {
+          res.end(JSON.stringify(results));
+        });
     },
     post: function (message, res) {
-      var keys = '(user, message, room, createdAt)';
-      var values = `("${message.user}", "${message.message}", "${message.roomname}", "${dateTime()}")`;
-      var command = `INSERT INTO messages ${keys} values ${values}`;
+      db.users.find({
+        where: {
+          name: message.user
+        }
+      }).then((user) => {
+        if (!user) {
+          db.users.create({
+            name: message.user
+          })
+          .then(() => {
+            db.messages.create({
+              message: message.message,
+              room: message.room,
+              userName: message.user
+            }).then(function(results) {
+              res.end(JSON.stringify(results));
+            });
+          });
+        } else {
+          db.messages.create({
+            message: message.message,
+            room: message.room,
+            userName: message.user
+          }).then(function(results) {
+            res.end(JSON.stringify(results));
+          });
+        }
+      });
 
-      var userPost = Promise.promisify(module.exports.users.post);
-      userPost(message.user).then(
-        query(command, function(results) {
-          console.log('message post ', results);
-          res.end();
-        })
-      );
+      
     }
   },
 
   users: {
-    get: function (res) {
-      query('select * from users', function(results) {
-        console.log('user get ', results);
-        res.end(JSON.stringify(results));
-      });
+    get: function (user) {
+      db.users.find(user)
+        .then(function(err, results) {
+          console.log('users get ', results);
+          res.end(JSON.stringify(results));
+        });
     },
     post: function (user) {
-      var call = 'INSERT INTO users (name) values ("' + user + '")';
-      query(call, function(results) {
-        console.log('user results ', results);
+      db.users.create({
+        name: user
+      }).then(function(results) {
+        console.log('message post ', results);
       });
     }
   }

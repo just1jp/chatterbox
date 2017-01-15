@@ -86,7 +86,6 @@ $(document).ready(function() {
       success: function (response) {
         var data = JSON.parse(response);
         this.clearMessages();
-        console.log(data);
         for (var i = data.length - 1; i >= 0; i--) {
           if (room === 'All' || this.escapeHtml(data[i].room) === room) {
             this.renderMessage(data[i]);
@@ -114,7 +113,7 @@ $(document).ready(function() {
     var mins = ('0' + created.getMinutes()).slice(-2);
     var seconds = ('0' + created.getSeconds()).slice(-2);
 
-    var username = this.escapeHtml(message.user);
+    var username = this.escapeHtml(message.userName);
     var timeStamp = month + '/' + day + '/' + year + ' ' + hours + ':' + mins + ':' + seconds;
     var user = $('<span></span>').append(username + ' foretold: ');
     var text = $('<span></span>').append(this.escapeHtml(message.message));
